@@ -6,7 +6,11 @@
     right: 20px;
     background-color: rgb(240, 247, 245);
 }
-
+.chatHeader{
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
 #messageDiv {
     overflow-y: auto;
     height: 250px;

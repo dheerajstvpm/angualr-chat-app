@@ -25,24 +25,18 @@ const Chat = require("./models/chatDetails")
 io.on('connection', (socket) => {
     console.log('Connection made');
     socket.on('join', async (data) => {
-        const room = await Chat.findOne({ $and: [{ user1: { $in: [data.sender, data.receiver] } }, { user2: { $in: [data.sender, data.receiver] } }] })
+        let room = await Chat.findOne({ $and: [{ user1: { $in: [data.sender, data.receiver] } }, { user2: { $in: [data.sender, data.receiver] } }] })
         if (!room) {
             const chat = new Chat({
                 user1: data.sender,
                 user2: data.receiver,
                 messages: []
             })
-            chat.save()
-                .then((result) => {
-                    room = result
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            room = await chat.save()
         }
         socket.join(room._id.str)
         console.log(`${data.sender} joined ${room._id}`);
-        socket.broadcast.to(room._id.str).emit('userJoined', { sender: data.sender, receiver: data.receiver, message: 'has joined this room.' })
+        socket.broadcast.to(room._id.str).emit('userJoined', { sender: data.sender, receiver: data.receiver, message: data.message })
     });
 
     socket.on('leave', async (data) => {

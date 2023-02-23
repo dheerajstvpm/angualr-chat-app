@@ -16,7 +16,7 @@ export class ChatService {
     }
 
     newUserJoined() {
-        let observable = new Observable<{ sender: string, receiver: string, message: string }>(observer => {
+        let observable = new Observable<{ sender: string, receiver: string, messages: string }>(observer => {
             this.socket.on('userJoined', data => {
                 observer.next(data)
             })
@@ -43,7 +43,7 @@ export class ChatService {
         this.socket.emit('message', data)
     }
 
-    messageReceived(){
+    messageReceived() {
         let observable = new Observable<{ sender: string, receiver: string, message: string }>(observer => {
             this.socket.on('messageReceived', data => {
                 observer.next(data)

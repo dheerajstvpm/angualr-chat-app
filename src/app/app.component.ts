@@ -13,7 +13,6 @@ export class AppComponent {
     message = ''
     messageArray: Array<{ sender: string, receiver: string, message: string }> = []
     chatWindow: boolean=false;
-    isSender: boolean=false;
 
     constructor(private chatService: ChatService) {
         this.chatService.newUserJoined()
@@ -22,7 +21,6 @@ export class AppComponent {
             .subscribe()
         this.chatService.messageReceived()
             .subscribe(data => {
-                if(this.sender===data.message)this.isSender=true;
                 this.messageArray.push(data)})
     }
 
